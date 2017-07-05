@@ -15,4 +15,17 @@ deprecated_options:
   - name: rabbit_userid, rabbit_pass, rabbit_host
     replacement_group: DEFAULT
     replacement_name: transport_url
-    value: rabbit://rabbit_userid:rabbit_pass@rabbit_host
+new_options:
+  oslo_messaging_rabbit:
+  - name: rabbit_host
+    value: None
+  - name: rabbit_user
+    value: None
+  - name: rabbit_pass
+    value: None
+  - name: rabbit_hosts
+    value: None
+  DEFAULT:
+  - name: transport_url
+    value: rabbit_userid, rabbit_pass, rabbit_host
+    template: "rabbit://{}:{}@{}"

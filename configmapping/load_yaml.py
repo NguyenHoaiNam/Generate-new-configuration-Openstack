@@ -3,6 +3,8 @@
 
 import yaml
 
+import utils
+
 
 def load_yaml(name_file):
     f = open(name_file)
@@ -10,9 +12,7 @@ def load_yaml(name_file):
     f.close()
     return content_dict
 
-
-a = load_yaml('/home/stack/my_git/'
-              'Generate-new-configuration-Openstack/'
-              'templates/oslo_messaging.yaml')
-
-print a
+if __name__ == '__main__':
+    full_path = utils.get_root_path('templates', 'oslo_messaging.yaml')
+    a = load_yaml(full_path)
+    print a
