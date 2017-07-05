@@ -1,0 +1,18 @@
+deprecated_options:
+  DEFAULT:
+  - name: rabbit_host
+    replacement_group: oslo_messaging_rabbit
+    replacement_name: rabbit_host
+  - name: rabbit_userid
+    replacement_group: oslo_messaging_rabbit
+    replacement_name: rabbit_userid
+  - name: rabbit_pass
+    replacement_group: oslo_messaging_rabbit
+    replacement_name: rabbit_pass
+  - name: rabbit_hosts
+    replacement_group: oslo_messaging_rabbit
+    replacement_name: rabbit_hosts
+  - name: rabbit_userid, rabbit_pass, rabbit_host
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+    value: rabbit://rabbit_userid:rabbit_pass@rabbit_host
