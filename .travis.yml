@@ -1,0 +1,11 @@
+language: python
+python:
+  - "2.7"
+script: tox -e pep8,py27 
+notifications:
+  email:
+    recipients:
+      - namptit307@gmail.com
+      - daibk115@gmail.com
+    on_success: change
+    on_failure: always
