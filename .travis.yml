@@ -1,6 +1,7 @@
 language: python
 python:
   - "2.7"
+install: "pip install -r test-requirements.txt"
 script: tox -e pep8,py27 
 notifications:
   email:
