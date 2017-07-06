@@ -12,6 +12,7 @@ def load_yaml(name_file):
     f.close()
     return content_dict
 
+
 if __name__ == '__main__':
     full_path = utils.get_root_path('templates', 'oslo_messaging.yaml')
     a = load_yaml(full_path)

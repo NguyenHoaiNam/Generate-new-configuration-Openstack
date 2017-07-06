@@ -28,7 +28,3 @@ def receive_old_config(namespace, CONF):
     # Start for
     for i in option_depricate:
         pass
-    getattr()
-
-
-
