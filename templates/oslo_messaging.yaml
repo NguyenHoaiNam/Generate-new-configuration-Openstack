@@ -12,9 +12,6 @@ deprecated_options:
   - name: rabbit_hosts
     replacement_group: oslo_messaging_rabbit
     replacement_name: rabbit_hosts
-  - name: rabbit_userid, rabbit_pass, rabbit_host
-    replacement_group: DEFAULT
-    replacement_name: transport_url
 new_options:
   oslo_messaging_rabbit:
   - name: rabbit_host
@@ -25,7 +22,3 @@ new_options:
     value: None
   - name: rabbit_hosts
     value: None
-  DEFAULT:
-  - name: transport_url
-    value: rabbit_userid, rabbit_pass, rabbit_host
-    template: "rabbit://{}:{}@{}"
