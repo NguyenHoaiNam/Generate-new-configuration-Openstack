@@ -23,6 +23,8 @@ def get_conf(conf_file=None, config_file=None):
         for namespace in namespaces:
             list_opts.extend(namespace[1])
         new_conf.register_group(group)
+        if k == 'DEFAULT':
+            new_conf.register_opts(list_opts)
         new_conf.register_opts(list_opts, group=group)
 
     nova_args = ['--config-file', config_file]
@@ -30,5 +32,16 @@ def get_conf(conf_file=None, config_file=None):
     return new_conf
 
 
+def get_ne_default(conf=None):
+    ne_dict = []
+    if isinstance(conf, cfg.ConfigOpts):
+        for name, group in conf._groups.items():
+            for option, opt in group._opts.items():
+                if conf[name][option] != opt['opt'].default:
+                    ne_dict.append((name, option))
+    return ne_dict
+
+
 if __name__ == '__main__':
-    get_conf()
+    conf = get_conf()
+    get_ne_default(conf)
