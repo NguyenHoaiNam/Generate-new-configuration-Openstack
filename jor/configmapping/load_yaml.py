@@ -3,7 +3,7 @@
 
 import yaml
 
-import utils
+from jor import utils
 
 
 def load_yaml(name_file):
