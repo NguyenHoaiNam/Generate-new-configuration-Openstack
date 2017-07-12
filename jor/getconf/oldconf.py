@@ -19,11 +19,13 @@ def get_conf(conf_file=None, config_file=None):
 
     # Make new CONF
     new_conf = cfg.ConfigOpts()
+    all_namespaces = []
     for k, v in groups.items():
         group = cfg.OptGroup(k)
         namespaces = v.get('namespaces', [])
         list_opts = []
         for namespace in namespaces:
+            all_namespaces.append(namespace[0])
             list_opts.extend(namespace[1])
         new_conf.register_group(group)
         if k == 'DEFAULT':
@@ -32,7 +34,7 @@ def get_conf(conf_file=None, config_file=None):
 
     nova_args = ['--config-file', config_file]
     new_conf(nova_args)
-    return new_conf
+    return new_conf, set(all_namespaces)
 
 
 def get_ne_default(conf=None):
@@ -43,3 +45,7 @@ def get_ne_default(conf=None):
                 if conf[name][option] != opt['opt'].default:
                     ne_dict.append((name, option))
     return ne_dict
+
+
+if __name__ == '__main__':
+    print get_conf()
