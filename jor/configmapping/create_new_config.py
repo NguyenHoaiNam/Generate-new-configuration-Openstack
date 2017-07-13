@@ -31,7 +31,21 @@ def make_global_option(namespace):
     NEW_OPTIONS = template_dict['new_options']
 
 
+def list_to_string(list_convert):
+    if type(list_convert) is list:
+        return ', '.join(list_convert)
+    else:
+        # The input is not a list
+        return list_convert
+
+
 def check_value(new_options, session, key):
+    """
+    :param new_options:
+    :param session:
+    :param key:
+    :return: value
+    """
     for option in new_options[session]:
         if option['name'] == key:
             return option['value']
@@ -71,7 +85,7 @@ def change_old_config_to_new(name_new_file, CONF):
             cru.set_option_file(name_file=name_new_file,
                                 session=new_group_config,
                                 key=new_name_config,
-                                value=new_value_config)
+                                value=list_to_string(new_value_config))
             # Delete the option in the list of option changed
             delete_option_deprecate(CHANGE_DEFAULT_OPTION,
                                     tuple_option_deprecate)
@@ -88,4 +102,4 @@ def move_option_changed(name_new_file, CONF):
         cru.set_option_file(name_file=name_new_file,
                             session=session,
                             key=key,
-                            value=value)
+                            value=list_to_string(value))
