@@ -1,4 +1,14 @@
 deprecated_options:
+  DEFAULT:
+  - name: rabbit_host
+    replacement_group: nam
+    replacement_name: rabbit_host
+  - name: rabbit_userid
+    replacement_group: nam
+    replacement_name: rabbit_userid
+  - name: rabbit_password
+    replacement_group: nam
+    replacement_name: rabbit_password
   oslo_messaging_rabbit:
   - name: rabbit_host
     replacement_group: nam
@@ -13,9 +23,7 @@ new_options:
   nam:
   - name: rabbit_host
     value: None
-  - name: rabbit_user
+  - name: rabbit_userid
     value: None
   - name: rabbit_password
-    value: None
-  - name: rabbit_hosts
     value: None

@@ -1,3 +1,6 @@
+# Author: Nam Nguyen Hoai
+# Author: Dai Dang Van
+
 from oslo_config import cfg
 from oslo_config import generator as gn
 
