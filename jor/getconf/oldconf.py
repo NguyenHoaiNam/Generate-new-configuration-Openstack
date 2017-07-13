@@ -43,8 +43,3 @@ def get_ne_default(conf=None):
                 if conf[name][option] != opt['opt'].default:
                     ne_dict.append((name, option))
     return ne_dict
-
-
-if __name__ == '__main__':
-    conf = get_conf()
-    get_ne_default(conf)
