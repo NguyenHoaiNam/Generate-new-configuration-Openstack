@@ -51,6 +51,30 @@ def check_value(new_options, session, key):
             return option['value']
 
 
+def check_template(new_options, session, key):
+    """
+    :param new_options:
+    :param session:
+    :param key:
+    :return: template
+    """
+    for option in new_options[session]:
+        if option['name'] == key:
+            return option['template']
+
+
+def check_mapping(new_options, session, key):
+    """
+    :param new_options:
+    :param session:
+    :param key:
+    :return: mapping
+    """
+    for option in new_options[session]:
+        if option['name'] == key:
+            return option['mapping']
+
+
 def delete_option_deprecate(change_default_option, option):
     try:
         return change_default_option.remove(option)
@@ -59,36 +83,55 @@ def delete_option_deprecate(change_default_option, option):
 
 
 # 1
-def change_old_config_to_new(name_new_file, CONF):
+def change_old_config_to_new(name_new_file, CONF, namespaces):
     # Start for with deprecated options
     global CHANGE_DEFAULT_OPTION
     CHANGE_DEFAULT_OPTION = oldconf.get_ne_default(CONF)
-    for session, values in DEPRECATED_OPTIONS.items():
-        for value in values:
-            old_key_config = value['name']
-            try:
-                old_value_config = CONF[session][old_key_config]
-            except Exception:
-                continue
-            tuple_option_deprecate = (session, old_key_config)
-            new_name_config = value['replacement_name']
-            new_group_config = value['replacement_group']
-            new_change_value = check_value(NEW_OPTIONS,
-                                           session=new_group_config,
-                                           key=new_name_config)
-            if new_change_value == 'None':
-                new_value_config = old_value_config
-            else:
-                # TODO(namnh):
-                pass
-            # Create a new file for new release
-            cru.set_option_file(name_file=name_new_file,
-                                session=new_group_config,
-                                key=new_name_config,
-                                value=list_to_string(new_value_config))
-            # Delete the option in the list of option changed
-            delete_option_deprecate(CHANGE_DEFAULT_OPTION,
-                                    tuple_option_deprecate)
+    for namespace in namespaces:
+        template_dict = get_template(namespace)
+        deprecation_options = template_dict['deprecated_options']
+        new_options = template_dict['new_options']
+        for session, values in deprecation_options.items():
+            for value in values:
+                old_key_config = value['name']
+                try:
+                    old_value_config = CONF[session][old_key_config]
+                except Exception:
+                    continue
+                tuple_option_deprecate = (session, old_key_config)
+                if tuple_option_deprecate not in CHANGE_DEFAULT_OPTION:
+                    continue
+                new_key_name = value['replacement_name']
+                new_group_name = value['replacement_group']
+                new_change_value = check_value(new_options,
+                                               session=new_group_name,
+                                               key=new_key_name)
+                new_template = check_template(new_options=new_options,
+                                              session=new_group_name,
+                                              key=new_key_name)
+                # new_mapping = check_mapping(new_options=new_options,
+                #                             session=new_group_name,
+                #                             key=new_key_name)
+                if new_change_value == 'None':
+                    new_value_config = old_value_config
+                else:
+                    if new_template != 'None':
+                        new_change_value_no_space = \
+                            new_change_value.replace(" ", "")
+                        new_change_value_dict = \
+                            new_change_value_no_space.split(',')
+                        new_value_config = \
+                            new_template.format(*new_change_value_dict)
+                    else:
+                        pass
+                # Create a new file for new release
+                cru.set_option_file(name_file=name_new_file,
+                                    session=new_group_name,
+                                    key=new_key_name,
+                                    value=list_to_string(new_value_config))
+                # Delete the option in the list of option changed
+                delete_option_deprecate(CHANGE_DEFAULT_OPTION,
+                                        tuple_option_deprecate)
 
 
 # 2
