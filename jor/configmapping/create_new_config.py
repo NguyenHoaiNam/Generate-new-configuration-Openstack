@@ -89,9 +89,3 @@ def move_option_changed(name_new_file, CONF):
                             session=session,
                             key=key,
                             value=value)
-
-
-CONF = oldconf.get_conf()
-make_global_option('barbican')
-change_old_config_to_new(NAME_NEW_FILE, CONF)
-move_option_changed(NAME_NEW_FILE, CONF)
