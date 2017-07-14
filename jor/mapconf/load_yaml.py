@@ -46,8 +46,8 @@ def get_param(CONF, session, key, param):
 
 
 def delete_option_deprecate(change_default_option, *options):
-    try:
-        for option in options:
+    for option in options:
+        try:
             return change_default_option.remove(option)
-    except ValueError:
-        pass
+        except ValueError:
+            pass

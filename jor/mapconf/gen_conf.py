@@ -25,8 +25,8 @@ def mapping_config(path_new_file, CONF, namespaces):
                     old_value = CONF[session][old_key]
                 except Exception:
                     continue
-                old_key_value = (session, old_key)
-                if old_key_value not in CHANGE_DEFAULT_OPTION:
+                old_key_group = (session, old_key)
+                if old_key_group not in CHANGE_DEFAULT_OPTION:
                     continue
                 new_key = value['replacement_name']
                 new_group = value['replacement_group']
@@ -56,7 +56,9 @@ def mapping_config(path_new_file, CONF, namespaces):
                                     value=load.list_to_string(new_value))
                 # Delete the option in the list of option changed
                 load.delete_option_deprecate(CHANGE_DEFAULT_OPTION,
-                                             old_key_value, new_key_group)
+                                             old_key_group)
+                load.delete_option_deprecate(CHANGE_DEFAULT_OPTION,
+                                             new_key_group)
 
 
 def add_options_ne_default(path_new_file, CONF):
