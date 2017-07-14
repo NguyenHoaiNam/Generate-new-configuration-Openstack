@@ -57,5 +57,11 @@ def get_ne_default(conf=None):
     return ne_dict
 
 
+def get_config_file(conf=None):
+    if conf:
+        return conf._namespace._parsed[0]
+    return {}
+
+
 if __name__ == '__main__':
     print get_conf()
