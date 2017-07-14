@@ -34,7 +34,17 @@ def get_conf(conf_file=None, config_file=None):
 
     nova_args = ['--config-file', config_file]
     new_conf(nova_args)
-    return new_conf, set(all_namespaces)
+
+    # A bad hacking thing.
+    projects = []
+    for namespace in all_namespaces:
+        sp = namespace.split('.')
+        if 'oslo' in namespace:
+            projects.append(".".join(sp[:2]))
+        else:
+            projects.append(sp[0])
+
+    return new_conf, set(projects)
 
 
 def get_ne_default(conf=None):
