@@ -47,6 +47,9 @@ def mapping_config(path_new_file, CONF, namespaces):
                                              n in change_value_list]
 
                         new_value = template.format(*change_value_real)
+                    elif mapping.upper() != 'NONE':
+                        mapping_dict = load.list_to_string(mapping)
+                        new_value = mapping_dict[old_value]
                     else:
                         pass
                 # Adding new option to the new file

@@ -45,9 +45,24 @@ def get_param(CONF, session, key, param):
             return option[param]
 
 
+def map_param(list_map, key):
+    for i in list_map:
+        i.key() == key
+        return i.value()
+
+
 def delete_option_deprecate(change_default_option, *options):
     for option in options:
         try:
             return change_default_option.remove(option)
         except ValueError:
             pass
+
+
+def string_to_dict(inputs_string):
+    value_dict = {}
+    for input_string in inputs_string.replace(" ", "").split(','):
+        key = input_string.split(':')[0]
+        value = input_string.split(':')[1]
+        value_dict[key] = value
+    return value_dict
