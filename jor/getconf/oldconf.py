@@ -57,5 +57,15 @@ def get_ne_default(conf=None):
     return ne_dict
 
 
+def get_config_file(conf=None):
+    _list = []
+    if conf:
+        for name, section in conf._namespace._parsed[0].items():
+            for option in section:
+                _list.append((name, option))
+    return _list
+
+
 if __name__ == '__main__':
-    print get_conf()
+    conf, projects = get_conf()
+    print get_config_file(conf)
