@@ -2,4 +2,4 @@
 .tox/*
 *.pyc
 jor.egg-info/*
-*.conf
+jor/newconf/*
