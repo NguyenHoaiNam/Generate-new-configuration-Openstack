@@ -2,12 +2,11 @@
 # Author: Dai Dang Van
 
 from jor.getconf import oldconf
-from jor.configmapping import create_new_config
-
+from jor.mapconf import gen_conf
+from jor import utils
 
 if __name__ == '__main__':
     CONF, namespaces = oldconf.get_conf()
-    create_new_config.change_old_config_to_new(create_new_config.NAME_NEW_FILE,
-                                               CONF, namespaces)
-    create_new_config.move_option_changed(create_new_config.NAME_NEW_FILE,
-                                          CONF)
+    path_new_config = utils.get_root_path('new_conf', 'barbican.conf')
+    gen_conf.mapping_config(path_new_config, CONF, namespaces)
+    gen_conf.add_options_ne_default(path_new_config.NAME_NEW_FILE, CONF)
