@@ -2,7 +2,6 @@
 # Author: Dai Dang Van
 
 from jor import utils
-
 import yaml
 
 
