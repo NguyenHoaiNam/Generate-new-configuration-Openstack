@@ -60,12 +60,14 @@ def get_ne_default(conf=None):
 def get_config_file(conf=None):
     _list = []
     if conf:
-        for name, section in conf._namespace._parsed[0].items():
-            for option in section:
-                _list.append((name, option))
+        section_options = conf._namespace._parsed[0]
+        for name, section in section_options.items():
+            for option, value in section.items():
+                _list.append((name, option, value[0]))
     return _list
 
 
 if __name__ == '__main__':
     conf, projects = get_conf()
-    print get_config_file(conf)
+    result = get_config_file(conf)
+    print(result)
