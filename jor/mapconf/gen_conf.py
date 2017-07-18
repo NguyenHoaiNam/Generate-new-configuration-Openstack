@@ -4,6 +4,7 @@
 from jor.getconf import oldconf
 from jor.getconf import crudini as cru
 from jor.mapconf import load_yaml as load
+from oslo_config import cfg
 
 OPTION_IN_FILE = None
 
@@ -23,7 +24,7 @@ def mapping_config(path_new_file, CONF, namespaces):
                 old_key = value['name']
                 try:
                     old_value = CONF[session][old_key]
-                except Exception:
+                except cfg.NoSuchOptError:
                     continue
                 old_key_group = (session, old_key)
                 if old_key_group not in OPTION_IN_FILE:
@@ -67,6 +68,9 @@ def add_options_ne_default(path_new_file, CONF):
     deprecated.
     """
     for session, key in OPTION_IN_FILE:
-        value = CONF[session][key]
+        try:
+            value = CONF[session][key]
+        except cfg.NoSuchOptError:
+            continue
         cru.set_option_file(name_file=path_new_file, session=session, key=key,
                             value=load.list_to_string(value))
