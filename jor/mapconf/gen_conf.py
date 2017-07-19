@@ -19,23 +19,23 @@ def mapping_config(path_new_file, CONF, namespaces):
             new_options = template_dict['new_options']
         except (IOError, TypeError):
             continue
-        for session, values in deprecation_options.items():
+        for section, values in deprecation_options.items():
             for value in values:
                 old_key = value['name']
                 try:
-                    old_value = CONF[session][old_key]
+                    old_value = CONF[section][old_key]
                 except cfg.NoSuchOptError:
                     continue
-                old_key_group = (session, old_key)
+                old_key_group = (section, old_key)
                 if old_key_group not in OPTION_IN_FILE:
                     continue
                 new_key = value['replacement_name']
                 new_group = value['replacement_group']
                 change_value = load.get_param(CONF=new_options, param='value',
-                                              session=new_group, key=new_key)
-                template = load.get_param(CONF=new_options, session=new_group,
+                                              section=new_group, key=new_key)
+                template = load.get_param(CONF=new_options, section=new_group,
                                           key=new_key, param='template')
-                mapping = load.get_param(CONF=new_options, session=new_group,
+                mapping = load.get_param(CONF=new_options, section=new_group,
                                          key=new_key, param='mapping')
                 if change_value.upper() == 'NONE':
                     new_value = old_value
@@ -43,7 +43,7 @@ def mapping_config(path_new_file, CONF, namespaces):
                     if template.upper() != 'NONE':
                         change_value_no_space = change_value.replace(" ", "")
                         change_value_list = change_value_no_space.split(',')
-                        change_value_real = [CONF[session][n] for
+                        change_value_real = [CONF[section][n] for
                                              n in change_value_list]
 
                         new_value = template.format(*change_value_real)
@@ -54,7 +54,7 @@ def mapping_config(path_new_file, CONF, namespaces):
                         pass
                 # Adding new option to the new file
                 cru.set_option_file(name_file=path_new_file,
-                                    session=new_group,
+                                    section=new_group,
                                     key=new_key,
                                     value=load.list_to_string(new_value))
                 # Delete the option in the list of option changed
@@ -67,10 +67,10 @@ def add_options_ne_default(path_new_file, CONF):
     This function will move options that is not equal with default and is not
     deprecated.
     """
-    for session, key in OPTION_IN_FILE:
+    for section, key in OPTION_IN_FILE:
         try:
-            value = CONF[session][key]
+            value = CONF[section][key]
         except cfg.NoSuchOptError:
             continue
-        cru.set_option_file(name_file=path_new_file, session=session, key=key,
+        cru.set_option_file(name_file=path_new_file, section=session, key=key,
                             value=load.list_to_string(value))

@@ -32,14 +32,14 @@ def list_to_string(list_convert):
         return list_convert
 
 
-def get_param(CONF, session, key, param):
+def get_param(CONF, section, key, param):
     """
     :param CONF:
-    :param session:
+    :param section:
     :param key:
     :return: value
     """
-    for option in CONF[session]:
+    for option in CONF[section]:
         if option['name'] == key:
             return option[param]
 
