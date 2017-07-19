@@ -72,5 +72,5 @@ def add_options_ne_default(path_new_file, CONF):
             value = CONF[section][key]
         except cfg.NoSuchOptError:
             continue
-        cru.set_option_file(name_file=path_new_file, section=session, key=key,
+        cru.set_option_file(name_file=path_new_file, section=section, key=key,
                             value=load.list_to_string(value))

@@ -955,13 +955,13 @@ Options:
 
 
 # Simulate sys
-def set_option_file(name_file, session, key, value):
-    sys.argv = ['--set', name_file, session, key, value]
+def set_option_file(name_file, section, key, value):
+    sys.argv = ['--set', name_file, section, key, value]
     crudini = Crudini()
     crudini.run()
 
 
-def delete_option_file(name_file, session, key):
-    sys.argv = ['--del', name_file, session, key]
+def delete_option_file(name_file, section, key):
+    sys.argv = ['--del', name_file, section, key]
     crudini = Crudini()
     crudini.run()
