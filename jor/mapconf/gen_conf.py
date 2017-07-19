@@ -113,12 +113,18 @@ def solve_dynamic_section(path_new_file, new_options, deprecation_options,
                 new_value = old_value
             else:
                 if template.upper() != 'NONE':
+                    pass
+                elif mapping.upper() != 'NONE':
                     mapping_dict = load.string_to_dict(mapping)
-                    new_value = mapping_dict[old_value]
+                    try:
+                        new_value = mapping_dict[old_value]
+                    except KeyError:
+                        continue
+
             cru.set_option_file(name_file=path_new_file,
                                 section=section_dynamic,
                                 key=new_key,
                                 value=load.list_to_string(new_value))
-            old_key_group = (section_dynamic, old_key)
+            old_key_group = (section_dynamic, old_key, old_value)
             load.delete_option_deprecate(OPTION_IN_FILE,
                                          old_key_group)

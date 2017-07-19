@@ -8,9 +8,11 @@ new_options:
   dynamic_section:
   - name: volume_driver
     value: None
+    template: None
     mapping: cinder.volume.drivers.ibm.storwize_svc.storwize_svc_iscsi.StorwizeSVCISCSIDriver:cinder_ibm, cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver:cinder_dell
   - name: iscsi_helper
     value: None
+    template: None
     mapping: tgtadm:hoainam
 option_enable_dynamic:
   name: enabled_backends
