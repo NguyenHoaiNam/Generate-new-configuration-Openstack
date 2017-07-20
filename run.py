@@ -5,6 +5,7 @@ from jor.getconf import oldconf
 from jor.mapconf import gen_conf
 from jor import utils
 
+
 if __name__ == '__main__':
     CONF, namespaces = oldconf.get_conf()
     path_new_config = utils.get_root_path('newconf', 'barbican.conf')

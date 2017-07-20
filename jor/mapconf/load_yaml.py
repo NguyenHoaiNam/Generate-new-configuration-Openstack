@@ -65,3 +65,17 @@ def string_to_dict(inputs_string):
         value = input_string.split(':')[1]
         value_dict[key] = value
     return value_dict
+
+
+def get_value_from_option_in_file(option_in_file, section, key):
+    for _section, _key, _value in option_in_file:
+        if _section == section and _key == key:
+            return _value
+        else:
+            pass
+
+
+def get_param_dynamic_section(new_dynamic_section, key):
+    for i in new_dynamic_section:
+        if i['name'] == key:
+            return i['value'], i['template'], i['mapping']
