@@ -8,8 +8,8 @@ __all__ = ['get_conf']
 
 
 def get_conf(conf_file=None, config_file=None):
-    conf_file = '/opt/stack/barbican/etc/oslo-config-generator/barbican.conf'
-    config_file = '/etc/barbican/barbican.conf'
+    conf_file = '/opt/stack/cinder/cinder/config/cinder-config-generator.conf'
+    config_file = '/etc/cinder/cinder.conf'
 
     conf = cfg.ConfigOpts()
     gn.register_cli_opts(conf)
