@@ -34,7 +34,8 @@ def mapping_config(path_new_file, CONF, namespaces):
                 solve_dynamic_section(path_new_file=path_new_file,
                                       old_dynamic_section=old_dynamic_section,
                                       new_dynamic_section=new_dynamic_section,
-                                      value_dynamic=value_dynamic)
+                                      value_dynamic=value_dynamic,
+                                      CONF=CONF)
             else:
                 for value in values:
                     old_key = value['name']
@@ -82,20 +83,20 @@ def mapping_config(path_new_file, CONF, namespaces):
 
 
 def solve_dynamic_section(path_new_file, old_dynamic_section,
-                          new_dynamic_section, value_dynamic):
+                          new_dynamic_section, value_dynamic, CONF):
     for section_dynamic in value_dynamic:
         for value in old_dynamic_section:
             old_key = value['name']
-            try:
-                old_value = load.get_value_from_option_in_file(OPTION_IN_FILE,
-                                                               section_dynamic,
-                                                               old_key)
-                new_key = value['replacement_name']
-                change_value, template, mapping = \
-                    load.get_all_params(new_options=new_dynamic_section,
-                                        key=new_key)
-            except Exception:
+            old_value = CONF[section_dynamic][old_key]
+            old_value_string = load.list_to_string(old_value)
+            group_dynamic = (section_dynamic, old_key, old_value_string)
+            if group_dynamic not in OPTION_IN_FILE:
+                # Don't need to solve
                 continue
+            new_key = value['replacement_name']
+            change_value, template, mapping = \
+                load.get_all_params(new_options=new_dynamic_section,
+                                    key=new_key)
             if change_value.upper() == 'NONE' and mapping.upper() == 'NONE':
                 new_value = old_value
             else:

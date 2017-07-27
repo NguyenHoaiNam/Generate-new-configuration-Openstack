@@ -1,10 +1,17 @@
 # Author: Nam Nguyen Hoai
 # Author: Dai Dang Van
 
+import importlib
+
 from oslo_config import cfg
 from oslo_config import generator as gn
 
-__all__ = ['get_conf']
+__all__ = ['get_conf', 'get_config_file']
+
+
+DYNAMIC_SECTION_PROJECTS = {
+    'cinder': 'jor.getconf.dynamic_section.cinder'
+}
 
 
 def get_conf(conf_file=None, config_file=None):
@@ -19,6 +26,8 @@ def get_conf(conf_file=None, config_file=None):
 
     # Make new CONF
     new_conf = cfg.ConfigOpts()
+    project_args = ['--config-file', config_file]
+    new_conf(project_args)
     all_namespaces = []
     for k, v in groups.items():
         group = cfg.OptGroup(k)
@@ -32,8 +41,9 @@ def get_conf(conf_file=None, config_file=None):
             new_conf.register_opts(list_opts)
         new_conf.register_opts(list_opts, group=group)
 
-    nova_args = ['--config-file', config_file]
-    new_conf(nova_args)
+    # if project:
+    #     dynamic = importlib.import_module(DYNAMIC_SECTION_PROJECTS[project])
+    #     dynamic.register_dynamic_section(new_conf)
 
     # A bad hacking thing.
     projects = []
@@ -43,6 +53,15 @@ def get_conf(conf_file=None, config_file=None):
             projects.append(".".join(sp[:2]))
         else:
             projects.append(sp[0])
+
+    for project in projects:
+        try:
+            get_name_module = DYNAMIC_SECTION_PROJECTS[project]
+        except KeyError:
+            # This project does not have dynamic section
+            continue
+        dynamic = importlib.import_module(get_name_module)
+        dynamic.register_dynamic_section(new_conf)
 
     return new_conf, set(projects)
 
@@ -66,8 +85,3 @@ def get_config_file(conf=None):
                 _list.append((name, option, value[0]))
     return _list
 
-
-if __name__ == '__main__':
-    conf, projects = get_conf()
-    result = get_config_file(conf)
-    print(result)

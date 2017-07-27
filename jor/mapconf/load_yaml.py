@@ -6,9 +6,8 @@ import yaml
 
 
 def load_yaml(name_file):
-    f = open(name_file)
-    content_dict = yaml.safe_load(f)
-    f.close()
+    with open(name_file, 'r') as f:
+        content_dict = yaml.safe_load(f)
     return content_dict
 
 
