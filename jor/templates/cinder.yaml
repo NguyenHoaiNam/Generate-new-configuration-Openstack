@@ -14,3 +14,4 @@ new_options:
     mapping: tgtadm:hoainam
 option_enable_dynamic:
   name: enabled_backends
+  group: DEFAULT

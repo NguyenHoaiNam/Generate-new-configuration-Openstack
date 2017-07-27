@@ -32,18 +32,6 @@ def list_to_string(list_convert):
         return list_convert
 
 
-def get_param(CONF, section, key, param):
-    """
-    :param CONF:
-    :param section:
-    :param key:
-    :return: value
-    """
-    for option in CONF[section]:
-        if option['name'] == key:
-            return option[param]
-
-
 def map_param(list_map, key):
     for i in list_map:
         i.key() == key
@@ -75,7 +63,12 @@ def get_value_from_option_in_file(option_in_file, section, key):
             pass
 
 
-def get_param_dynamic_section(new_dynamic_section, key):
-    for i in new_dynamic_section:
-        if i['name'] == key:
-            return i['value'], i['template'], i['mapping']
+def get_all_params(new_options, key, section=None):
+    if section is None:
+        for i in new_options:
+            if i['name'] == key:
+                return i['value'], i['template'], i['mapping']
+    else:
+        for i in new_options[section]:
+            if i['name'] == key:
+                return i['value'], i['template'], i['mapping']
