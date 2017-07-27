@@ -84,4 +84,3 @@ def get_config_file(conf=None):
             for option, value in section.items():
                 _list.append((name, option, value[0]))
     return _list
-
