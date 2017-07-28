@@ -46,11 +46,11 @@ new_options:
   - name: volume_driver
     value: None
     template: None
-    mapping: None
+    mapping: cinder.volume.drivers.lvm.LVMVolumeDriver:cinder.volume.drivers.lvm.LVMVolumeDriver.update
   - name: iscsi_helper
     value: None
     template: None
-    mapping: tgtadm:hoainam
+    mapping: tgtadm:dkm_ngon_roi
 option_enable_dynamic:
   name: enabled_backends
   group: DEFAULT
