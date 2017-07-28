@@ -45,7 +45,8 @@ def mapping_config(path_new_file, CONF, namespaces):
                         # There is no value with this key so we will continue
                         # with other value.
                         continue
-                    old_key_group = (section, old_key, old_value)
+                    old_key_group = (section, old_key,
+                                     load.to_string(old_value))
                     if old_key_group not in OPTION_IN_FILE:
                         # We only solve options that have in the config file
                         continue
@@ -76,7 +77,7 @@ def mapping_config(path_new_file, CONF, namespaces):
                     cru.set_option_file(name_file=path_new_file,
                                         section=new_group,
                                         key=new_key,
-                                        value=load.list_to_string(new_value))
+                                        value=load.to_string(new_value))
                     # Delete the option in the list of option changed
                     load.delete_option_deprecate(OPTION_IN_FILE,
                                                  old_key_group)
@@ -88,7 +89,7 @@ def solve_dynamic_section(path_new_file, old_dynamic_section,
         for value in old_dynamic_section:
             old_key = value['name']
             old_value = CONF[section_dynamic][old_key]
-            old_value_string = load.list_to_string(old_value)
+            old_value_string = load.to_string(old_value)
             group_dynamic = (section_dynamic, old_key, old_value_string)
             if group_dynamic not in OPTION_IN_FILE:
                 # Don't need to solve
@@ -119,7 +120,7 @@ def solve_dynamic_section(path_new_file, old_dynamic_section,
             cru.set_option_file(name_file=path_new_file,
                                 section=section_dynamic,
                                 key=new_key,
-                                value=load.list_to_string(new_value))
+                                value=load.to_string(new_value))
             old_key_group = (section_dynamic, old_key, old_value)
             load.delete_option_deprecate(OPTION_IN_FILE,
                                          old_key_group)
@@ -136,4 +137,4 @@ def add_options_ne_default(path_new_file, CONF):
         except cfg.NoSuchOptError:
             value = _value
         cru.set_option_file(name_file=path_new_file, section=section, key=key,
-                            value=load.list_to_string(value))
+                            value=load.to_string(value))

@@ -23,12 +23,15 @@ def get_template(namespace):
     return load_yaml(template_path_name)
 
 
-def list_to_string(list_convert):
-    if type(list_convert) is list:
-        return ', '.join(list_convert)
+def to_string(ilt):
+    """
+    :param ilt may be int, list, tuple
+    :return:
+    """
+    if (type(ilt) is list) or (type(ilt) is tuple):
+        return ', '.join(str(i) for i in ilt)
     else:
-        # The input is not a list
-        return list_convert
+        return str(ilt)
 
 
 def map_param(list_map, key):
@@ -37,12 +40,11 @@ def map_param(list_map, key):
         return i.value()
 
 
-def delete_option_deprecate(change_default_option, *options):
-    for option in options:
-        try:
-            return change_default_option.remove(option)
-        except ValueError:
-            pass
+def delete_option_deprecate(change_default_option, option):
+    try:
+        return change_default_option.remove(option)
+    except ValueError:
+        pass
 
 
 def string_to_dict(inputs_string):
