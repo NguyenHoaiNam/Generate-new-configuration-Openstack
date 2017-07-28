@@ -21,9 +21,8 @@ import pbr.version
 from oslo_config import cfg
 
 DYNAMIC_LIST = 'enabled_backends'
-DEFAULT_BACKEND = 'DEFAULT'
 version = pbr.version.VersionInfo('cinder').version_string().split('.')
-if version[0] > 10:
+if int(version[0]) > 10:
     DEFAULT_BACKEND = 'backend_defaults'
 else:
     DEFAULT_BACKEND = 'DEFAULT'
