@@ -34,7 +34,7 @@ new_options:
     value: None
     template: None
     mapping: None
-  - name: eqlx_chap_login
+  - name: chap_username
     value: None
     template: None
     mapping: None

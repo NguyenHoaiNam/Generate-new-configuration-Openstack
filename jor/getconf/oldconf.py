@@ -31,7 +31,10 @@ def get_conf(conf_file=None, config_file=None):
     all_namespaces = []
     for k, v in groups.items():
         group = cfg.OptGroup(k)
-        namespaces = v.get('namespaces', [])
+        try:
+            namespaces = v.get('namespaces', [])
+        except:
+            namespaces = v
         list_opts = []
         for namespace in namespaces:
             all_namespaces.append(namespace[0])
