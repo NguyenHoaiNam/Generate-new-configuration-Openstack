@@ -36,3 +36,22 @@ python run.py --namespace-file /opt/stack/barbican/etc/oslo-config-generator/bar
 #### Don't still solve:
 - Change config with Neutron. Because Neutron can read all ini config-file from neutron.conf.
 - All options that were removed anymore.
+
+
+### Our plan
+
+#### Phase 1:
+- Creating Poc code: Done
+- Config mapping 1:1 and n:1: Done
+
+#### Phase 2: Doing
+- Dynamic section in case of Cinder: Done
+- Dynamic section in case of Neutron: Doing
+- Creating yaml file for Keystone, Glance, Neutron, Cinder, Nova.
+
+#### Phase 3: Pending
+- Using this project generate a new config at Ocata from Mitaka then creating a tool is to upgrade Openstack from Mitaka to Ocata automatically including Keystone, Glance, Nova, Neutron, Cinder.
+This tool will use all config file from this project.
+
+#### Phase 4: Pending
+- Contributing this idea to oslo-config.
