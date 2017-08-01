@@ -32,4 +32,4 @@ Step 3: Generate config
 
 #### Don't still solve:
 - Change config with Neutron. Because Neutron can read all ini config-file from neutron.conf.
-- All option that were removed anymore.
+- All options that were removed anymore.
