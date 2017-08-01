@@ -33,3 +33,21 @@ Step 3: Generate config
 #### Don't still solve:
 - Change config with Neutron. Because Neutron can read all ini config-file from neutron.conf.
 - All options that were removed anymore.
+
+
+### Our plan
+
+#### Phase 1: Done
+- Creating PoC code
+- Mapping config 1:1 and n:1
+
+#### Phase 2: Doing
+- Dynamic section in case of Cinder: Done
+- Dynamic section in case of Neutron: Doing
+
+#### Phase 3: Pending
+- Using this project generate new configs at Ocata from Mitaka config then writing a tool upgrade OpenStack Mitaka to Ocata for 5 main project: Keystone, Neutron, Glance, Nova, Cinder.
+
+
+#### Phase 4: Pending
+- Contribute this idea to oslo-config
