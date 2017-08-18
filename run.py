@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Author: Nam Nguyen Hoai
 # Author: Dai Dang Van
 
