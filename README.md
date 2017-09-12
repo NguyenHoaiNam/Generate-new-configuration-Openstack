@@ -19,7 +19,7 @@ sudo -E pip install -r requirements.txt
 
 Step 3: Generate config
 
-*TODO*(namnh, daidv): We will update fully this step after finishing this project.
+*TODO*: We will update fully this step after finishing this project.
 ```
 python run.py --namespace-file /opt/stack/barbican/etc/oslo-config-generator/barbican.conf --old-config-file /etc/barbican/barbican.conf --new-config-file barbican.conf
 ```
