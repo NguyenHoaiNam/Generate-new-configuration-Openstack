@@ -1,0 +1,56 @@
+deprecated_options:
+  DEFAULT:
+  - name: osapi_compute_link_prefix
+    replacement_group: DEFAULT
+    replacement_name: osapi_volume_base_URL
+  - name: host
+    replacement_group: DEFAULT
+    replacement_name: backend_host
+  - name: eqlx_use_chap
+    replacement_group: DEFAULT
+    replacement_name: use_chap_auth
+  - name: eqlx_chap_login
+    replacement_group: DEFAULT
+    replacement_name: chap_username
+  - name: eqlx_chap_password
+    replacement_group: DEFAULT
+    replacement_name: chap_password
+  dynamic_section:
+  - name: volume_driver
+    replacement_name: volume_driver
+  - name: iscsi_helper
+    replacement_name: iscsi_helper
+new_options:
+  DEFAULT:
+  - name: osapi_volume_base_URL
+    value: None
+    template: None
+    mapping: None
+  - name: backend_host
+    value: None
+    template: None
+    mapping: None
+  - name: use_chap_auth
+    value: None
+    template: None
+    mapping: None
+  - name: chap_username
+    value: None
+    template: None
+    mapping: None
+  - name: chap_password
+    value: None
+    template: None
+    mapping: None
+  dynamic_section:
+  - name: volume_driver
+    value: None
+    template: None
+    mapping: cinder.volume.drivers.lvm.LVMVolumeDriver:cinder.volume.drivers.lvm.LVMVolumeDriver.update
+  - name: iscsi_helper
+    value: None
+    template: None
+    mapping: tgtadm:dkm_ngon_roi
+option_enable_dynamic:
+  name: enabled_backends
+  group: DEFAULT

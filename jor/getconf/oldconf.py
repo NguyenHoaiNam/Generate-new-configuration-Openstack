@@ -1,16 +1,20 @@
 # Author: Nam Nguyen Hoai
 # Author: Dai Dang Van
 
+import importlib
+
 from oslo_config import cfg
 from oslo_config import generator as gn
 
-__all__ = ['get_conf']
+__all__ = ['get_conf', 'get_config_file']
+
+
+DYNAMIC_SECTION_PROJECTS = {
+    'cinder': 'jor.getconf.dynamic_section.cinder'
+}
 
 
 def get_conf(conf_file=None, config_file=None):
-    conf_file = '/opt/stack/barbican/etc/oslo-config-generator/barbican.conf'
-    config_file = '/etc/barbican/barbican.conf'
-
     conf = cfg.ConfigOpts()
     gn.register_cli_opts(conf)
     oslo_args = ['--config-file', conf_file]
@@ -19,10 +23,15 @@ def get_conf(conf_file=None, config_file=None):
 
     # Make new CONF
     new_conf = cfg.ConfigOpts()
+    project_args = ['--config-file', config_file]
+    new_conf(project_args)
     all_namespaces = []
     for k, v in groups.items():
         group = cfg.OptGroup(k)
-        namespaces = v.get('namespaces', [])
+        try:
+            namespaces = v.get('namespaces', [])
+        except Exception:
+            namespaces = v
         list_opts = []
         for namespace in namespaces:
             all_namespaces.append(namespace[0])
@@ -31,11 +40,6 @@ def get_conf(conf_file=None, config_file=None):
         if k == 'DEFAULT':
             new_conf.register_opts(list_opts)
         new_conf.register_opts(list_opts, group=group)
-
-    nova_args = ['--config-file', config_file]
-    new_conf(nova_args)
-
-    # A bad hacking thing.
     projects = []
     for namespace in all_namespaces:
         sp = namespace.split('.')
@@ -43,6 +47,15 @@ def get_conf(conf_file=None, config_file=None):
             projects.append(".".join(sp[:2]))
         else:
             projects.append(sp[0])
+
+    for project in projects:
+        try:
+            get_name_module = DYNAMIC_SECTION_PROJECTS[project]
+        except KeyError:
+            # This project does not have dynamic section
+            continue
+        dynamic = importlib.import_module(get_name_module)
+        dynamic.register_dynamic_section(new_conf)
 
     return new_conf, set(projects)
 
@@ -60,12 +73,8 @@ def get_ne_default(conf=None):
 def get_config_file(conf=None):
     _list = []
     if conf:
-        for name, section in conf._namespace._parsed[0].items():
-            for option in section:
-                _list.append((name, option))
+        section_options = conf._namespace._parsed[0]
+        for name, section in section_options.items():
+            for option, value in section.items():
+                _list.append((name, option, value[0]))
     return _list
-
-
-if __name__ == '__main__':
-    conf, projects = get_conf()
-    print get_config_file(conf)

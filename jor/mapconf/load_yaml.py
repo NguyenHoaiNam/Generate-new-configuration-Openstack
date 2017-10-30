@@ -6,9 +6,8 @@ import yaml
 
 
 def load_yaml(name_file):
-    f = open(name_file)
-    content_dict = yaml.safe_load(f)
-    f.close()
+    with open(name_file, 'r') as f:
+        content_dict = yaml.safe_load(f)
     return content_dict
 
 
@@ -24,24 +23,15 @@ def get_template(namespace):
     return load_yaml(template_path_name)
 
 
-def list_to_string(list_convert):
-    if type(list_convert) is list:
-        return ', '.join(list_convert)
+def to_string(ilt):
+    """
+    :param ilt may be int, list, tuple
+    :return:
+    """
+    if (type(ilt) is list) or (type(ilt) is tuple):
+        return ', '.join(str(i) for i in ilt)
     else:
-        # The input is not a list
-        return list_convert
-
-
-def get_param(CONF, section, key, param):
-    """
-    :param CONF:
-    :param section:
-    :param key:
-    :return: value
-    """
-    for option in CONF[section]:
-        if option['name'] == key:
-            return option[param]
+        return str(ilt)
 
 
 def map_param(list_map, key):
@@ -50,12 +40,11 @@ def map_param(list_map, key):
         return i.value()
 
 
-def delete_option_deprecate(change_default_option, *options):
-    for option in options:
-        try:
-            return change_default_option.remove(option)
-        except ValueError:
-            pass
+def delete_option_deprecate(change_default_option, option):
+    try:
+        return change_default_option.remove(option)
+    except ValueError:
+        pass
 
 
 def string_to_dict(inputs_string):
@@ -65,3 +54,22 @@ def string_to_dict(inputs_string):
         value = input_string.split(':')[1]
         value_dict[key] = value
     return value_dict
+
+
+def get_value_from_option_in_file(option_in_file, section, key):
+    for _section, _key, _value in option_in_file:
+        if _section == section and _key == key:
+            return _value
+        else:
+            pass
+
+
+def get_all_params(new_options, key, section=None):
+    if section is None:
+        for i in new_options:
+            if i['name'] == key:
+                return i['value'], i['template'], i['mapping']
+    else:
+        for i in new_options[section]:
+            if i['name'] == key:
+                return i['value'], i['template'], i['mapping']
