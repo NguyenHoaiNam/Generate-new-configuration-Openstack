@@ -38,7 +38,10 @@ def get_conf(conf_file=None, config_file=None):
             list_opts.extend(namespace[1])
         new_conf.register_group(group)
         if k == 'DEFAULT':
-            new_conf.register_opts(list_opts)
+            try:
+                new_conf.register_opts(list_opts)
+            except cfg.DuplicateOptError:
+                continue
         new_conf.register_opts(list_opts, group=group)
     projects = []
     for namespace in all_namespaces:
