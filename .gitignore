@@ -4,4 +4,4 @@
 jor.egg-info/*
 ## Ignore config file
 jor/newconf/*
-jor/templates/*
+# jor/templates/*

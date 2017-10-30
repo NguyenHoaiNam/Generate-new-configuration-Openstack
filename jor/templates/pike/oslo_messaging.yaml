@@ -1,0 +1,33 @@
+deprecated_options:
+  DEFAULT:
+  - name: rabbit_host
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  - name: rabbit_userid
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  - name: rabbit_password
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  - name: rabbit_port
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  oslo_messaging_rabbit:
+  - name: rabbit_host
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  - name: rabbit_userid
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  - name: rabbit_password
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+  - name: rabbit_port
+    replacement_group: DEFAULT
+    replacement_name: transport_url
+new_options:
+  DEFAULT:
+  - name: transport_url
+    value: rabbit_userid, rabbit_password, rabbit_host, rabbit_port
+    template: rabbit://{}:{}@{}:{}
+    mapping: None

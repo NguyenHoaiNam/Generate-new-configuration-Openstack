@@ -15,7 +15,7 @@ class JorShell(object):
     def get_base_parser(self):
         parser = argparse.ArgumentParser(
             prog='jor',
-            add_help=False,
+            add_help=True,
         )
 
         # Global arguments
@@ -31,14 +31,18 @@ class JorShell(object):
                             help="New config file for your ENV",
                             required=True)
 
+        parser.add_argument('--release-target',
+                            help='Release target which you want to generate',
+                            required=True)
+
         return parser
 
     def main(self, argv):
         # Parse args once to find version
         parser = self.get_base_parser()
         # NOTE(daidv): we will pass unknown inputs instead of use parse_args.
-        options, args = parser.parse_known_args(argv)
-        return options
+        all_options, _ = parser.parse_known_args(argv)
+        return all_options
 
 
 if __name__ == '__main__':
@@ -47,5 +51,6 @@ if __name__ == '__main__':
     CONF, namespaces = oldconf.get_conf(
         options.namespace_file, options.old_config_file)
     path_new_config = utils.get_root_path('newconf', options.new_config_file)
-    gen_conf.mapping_config(path_new_config, CONF, namespaces)
+    gen_conf.mapping_config(path_new_config, CONF, namespaces,
+                            options.release_target)
     gen_conf.add_options_ne_default(path_new_config, CONF)
