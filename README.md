@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/NguyenHoaiNam/Jump-Over-Release.svg?branch=master)](https://travis-ci.org/NguyenHoaiNam/Jump-Over-Release)
 # Generate-new-configuration-Openstack
-This project is to generate new configuration for Openstack new release
+This project is to generate new configuration automatically for Openstack new release
 
 ### How to install
 
@@ -17,9 +17,15 @@ cd Jump-Over-Release
 sudo -E pip install -r requirements.txt
 ```
 
-Step 3: Generate config
+Step 3: Run command to generate configuration
 
-*TODO*: We will update fully this step after finishing this project.
+Run `python run.py --help` to show some options including:
+  - namespace-file: the path of namespace-file. This file is used to create CONF oject.
+  - old-config-file: the path of old configuration file.
+  - new-config-file: the name of new configuration which you want to generate.
+
+For example: In order to create a new configuration in Barbican then run a command as following:
+
 ```
 python run.py --namespace-file /opt/stack/barbican/etc/oslo-config-generator/barbican.conf --old-config-file /etc/barbican/barbican.conf --new-config-file barbican.conf
 ```

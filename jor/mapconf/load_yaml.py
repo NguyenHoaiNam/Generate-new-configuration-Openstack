@@ -11,15 +11,17 @@ def load_yaml(name_file):
     return content_dict
 
 
-def get_template(namespace):
+def get_template(namespace, release):
     """
     :param namespace: the namespace of a project like nova, keystone,
     oslo_messaging.
+    :param release: Release target which you want to create new configuration
     :return: a dictionary.
     """
     namespace = namespace.replace(".", "_")
     template_yaml = namespace + '.yaml'
-    template_path_name = utils.get_root_path('templates', template_yaml)
+    template_path_name = utils.get_root_path('templates', release,
+                                             template_yaml)
     return load_yaml(template_path_name)
 
 

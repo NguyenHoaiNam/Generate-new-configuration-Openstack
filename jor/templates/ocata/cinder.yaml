@@ -15,11 +15,12 @@ deprecated_options:
   - name: eqlx_chap_password
     replacement_group: DEFAULT
     replacement_name: chap_password
-  dynamic_section:
-  - name: volume_driver
-    replacement_name: volume_driver
-  - name: iscsi_helper
-    replacement_name: iscsi_helper
+  # Example for dynamic_section:
+  # dynamic_section:
+  # - name: volume_driver
+  #   replacement_name: volume_driver
+  # - name: iscsi_helper
+  #   replacement_name: iscsi_helper
 new_options:
   DEFAULT:
   - name: osapi_volume_base_URL
@@ -42,15 +43,16 @@ new_options:
     value: None
     template: None
     mapping: None
-  dynamic_section:
-  - name: volume_driver
-    value: None
-    template: None
-    mapping: cinder.volume.drivers.lvm.LVMVolumeDriver:cinder.volume.drivers.lvm.LVMVolumeDriver.update
-  - name: iscsi_helper
-    value: None
-    template: None
-    mapping: tgtadm:dkm_ngon_roi
+  # Example for dynamic section:
+  # dynamic_section:
+  # - name: volume_driver
+  #   value: None
+  #   template: None
+  #   mapping: cinder.volume.drivers.lvm.LVMVolumeDriver:cinder.volume.drivers.lvm.LVMVolumeDriverUpdated
+  # - name: iscsi_helper
+  #   value: None
+  #   template: None
+  #   mapping: tgtadm:tgtadm_updated
 option_enable_dynamic:
   name: enabled_backends
   group: DEFAULT
