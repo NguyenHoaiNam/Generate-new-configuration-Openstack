@@ -3,11 +3,13 @@
 # Author: Dai Dang Van
 
 import argparse
+import os
 import sys
 
 from jor.getconf import oldconf
 from jor.mapconf import gen_conf
-from jor import utils
+
+path = os.path.dirname(os.path.abspath(__file__))
 
 
 class JorShell(object):
@@ -28,7 +30,8 @@ class JorShell(object):
                             required=True)
 
         parser.add_argument('--new-config-file',
-                            help="New config file for your ENV",
+                            help="New config file for your ENV. For example:"
+                                 "neutron.conf",
                             required=True)
 
         parser.add_argument('--release-target',
@@ -50,7 +53,7 @@ if __name__ == '__main__':
     options = shell.main(sys.argv[1:])
     CONF, namespaces = oldconf.get_conf(
         options.namespace_file, options.old_config_file)
-    path_new_config = utils.get_root_path('newconf', options.new_config_file)
+    path_new_config = os.path.join(path, options.new_config_file)
     gen_conf.mapping_config(path_new_config, CONF, namespaces,
                             options.release_target)
     gen_conf.add_options_ne_default(path_new_config, CONF)
