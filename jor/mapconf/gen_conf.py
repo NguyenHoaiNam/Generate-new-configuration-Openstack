@@ -1,10 +1,10 @@
 # Author: Nam Nguyen Hoai
 # Author: Dai Dang Van
 
-from jor.getconf import oldconf
-from jor.getconf import crudini as cru
-from jor.mapconf import load_yaml as load
 from oslo_config import cfg
+
+from jor.getconf import oldconf
+from jor.mapconf import load_yaml as load, write_conf as cru
 
 OPTION_IN_FILE = None
 
