@@ -14,7 +14,7 @@ def mapping_config(path_new_file, CONF, namespaces, release):
     OPTION_IN_FILE = oldconf.get_config_file(CONF)
     for namespace in namespaces:
         try:
-            template_dict = load.get_template(namespace)
+            template_dict = load.get_template(namespace, release=release)
             deprecation_options = template_dict['deprecated_options']
             new_options = template_dict['new_options']
         except (IOError, TypeError):
