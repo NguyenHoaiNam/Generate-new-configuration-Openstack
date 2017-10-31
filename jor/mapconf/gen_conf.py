@@ -9,7 +9,7 @@ from jor.mapconf import load_yaml as load, write_conf as cru
 OPTION_IN_FILE = None
 
 
-def mapping_config(path_new_file, CONF, namespaces):
+def mapping_config(path_new_file, CONF, namespaces, release):
     global OPTION_IN_FILE
     OPTION_IN_FILE = oldconf.get_config_file(CONF)
     for namespace in namespaces:
