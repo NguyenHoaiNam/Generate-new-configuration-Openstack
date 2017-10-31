@@ -30,7 +30,7 @@ def get_conf(conf_file=None, config_file=None):
         group = cfg.OptGroup(k)
         try:
             namespaces = v.get('namespaces', [])
-        except:
+        except Exception:
             namespaces = v
         list_opts = []
         for namespace in namespaces:
@@ -40,12 +40,6 @@ def get_conf(conf_file=None, config_file=None):
         if k == 'DEFAULT':
             new_conf.register_opts(list_opts)
         new_conf.register_opts(list_opts, group=group)
-
-    # if project:
-    #     dynamic = importlib.import_module(DYNAMIC_SECTION_PROJECTS[project])
-    #     dynamic.register_dynamic_section(new_conf)
-
-    # A bad hacking thing.
     projects = []
     for namespace in all_namespaces:
         sp = namespace.split('.')
