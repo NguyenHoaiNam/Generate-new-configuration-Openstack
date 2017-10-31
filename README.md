@@ -22,7 +22,8 @@ Step 3: Run command to generate configuration
 Run `python run.py --help` to show some options including:
   - namespace-file: the path of namespace-file. This file is used to create CONF oject.
   - old-config-file: the path of old configuration file.
-  - new-config-file: the name of new configuration which you want to generate.
+  - new-config-file: the name of new configuration.
+  - release-target: the release that you want to upgrade.
 
 For example: In order to create a new configuration in Barbican then run a command as following:
 

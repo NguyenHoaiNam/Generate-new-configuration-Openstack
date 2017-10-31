@@ -15,7 +15,7 @@ class JorShell(object):
     def get_base_parser(self):
         parser = argparse.ArgumentParser(
             prog='jor',
-            add_help=False,
+            add_help=True,
         )
 
         # Global arguments
