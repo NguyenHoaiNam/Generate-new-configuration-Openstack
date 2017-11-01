@@ -5,7 +5,9 @@ from oslo_config import cfg
 
 from jor.getconf import oldconf
 from jor.mapconf import load_yaml as load, write_conf as cru
+from jor import utils
 
+LOG = utils.get_log(__name__)
 OPTION_IN_FILE = None
 
 
@@ -15,6 +17,10 @@ def mapping_config(path_new_file, CONF, namespaces, release):
     for namespace in namespaces:
         try:
             template_dict = load.get_template(namespace, release=release)
+        except IOError:
+            LOG.info('There is no template file for {0}'.format(namespace))
+            continue
+        try:
             deprecation_options = template_dict['deprecated_options']
             new_options = template_dict['new_options']
         except (IOError, TypeError):
@@ -44,7 +50,18 @@ def mapping_config(path_new_file, CONF, namespaces, release):
                     except cfg.NoSuchOptError:
                         # There is no value with this key so we will continue
                         # with other value.
-                        continue
+                        LOG.info('There is no value of this {0}.'.
+                                 format(old_key))
+                        LOG.info('Try getting the value from new_config')
+                        new_key = value['replacement_name']
+                        new_section = value['replacement_group']
+                        try:
+                            old_value = CONF[new_section][new_key]
+                        except cfg.NoSuchGroupError:
+                            LOG.info('There is no value with new_option '
+                                     'as well. So do not need to continue '
+                                     'running')
+                            continue
                     old_key_group = (section, old_key,
                                      load.to_string(old_value))
                     if old_key_group not in OPTION_IN_FILE:

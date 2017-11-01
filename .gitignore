@@ -1,6 +1,7 @@
 .idea*
 .tox/*
 *.pyc
+*.conf
 jor.egg-info/*
 ## Ignore config file
 jor/newconf/*
