@@ -41,7 +41,7 @@ def get_conf(conf_file=None, config_file=None):
             try:
                 new_conf.register_opts(list_opts)
             except cfg.DuplicateOptError:
-                continue
+                pass
         new_conf.register_opts(list_opts, group=group)
     projects = []
     for namespace in all_namespaces:
