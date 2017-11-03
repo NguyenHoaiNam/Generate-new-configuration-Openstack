@@ -57,7 +57,7 @@ def mapping_config(path_new_file, CONF, namespaces, release):
                         new_section = value['replacement_group']
                         try:
                             old_value = CONF[new_section][new_key]
-                        except cfg.NoSuchGroupError:
+                        except cfg.NoSuchOptError:
                             LOG.info('There is no value with new_option '
                                      'as well. So do not need to continue '
                                      'running')

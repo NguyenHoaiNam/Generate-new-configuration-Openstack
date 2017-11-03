@@ -48,7 +48,7 @@ def get_conf(conf_file=None, config_file=None):
             try:
                 new_conf.register_opts(list_opts)
             except cfg.DuplicateOptError:
-                continue
+                pass
         LOG.info("Register group %s into new_conf.", group.name)
         new_conf.register_opts(list_opts, group=group)
     projects = []
