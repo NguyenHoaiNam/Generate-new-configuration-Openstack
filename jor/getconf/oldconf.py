@@ -49,10 +49,7 @@ def get_conf(conf_file=None, config_file=None):
                 new_conf.register_opts(list_opts)
             except cfg.DuplicateOptError:
                 pass
-<<<<<<< HEAD
         LOG.info("Register group %s into new_conf.", group.name)
-=======
->>>>>>> 45ef0d8b9cb2d70f87a725936f60a514649a349d
         new_conf.register_opts(list_opts, group=group)
     projects = []
     for namespace in all_namespaces:
