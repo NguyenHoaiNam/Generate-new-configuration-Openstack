@@ -15,13 +15,15 @@ Problem description:
 ===================
 
 When users upgrade their OpenStack system to new release. Users have to update 
-a new configuration for new release, so it takes a lot of time and makes users difficult sometime.
+a new configuration for new release, so it takes a lot of time and makes users
+difficult sometime.
 
 Scenario:
 =========
 
-Imagine, this feature is implemented to oslo.conf. Users can run this feature on old release to generate
-new configuration for new release and the configuration will be able to use for new enviroment.
+Imagine, this feature is implemented to `oslo.config`. Users can run this
+feature on old release to generate new configuration for new release and the
+configuration will be able to use for new enviroment.
 
                                namespace file
                                      +
@@ -40,26 +42,49 @@ new configuration for new release and the configuration will be able to use for 
 
 Proposed change:
 ================
-Currently, there are two solutions for this feature.
+Currently, there are some problems which need to be archived for this feature.
 
-Solution 1: Using mapping-file
+Problem 1: How to get old values from old config file via `oslo.config`?
 ---------------------------
 
-In order to have this feature, we need to solve some problems as following:
+Now, we have a way to generate an sample configuration file for any project, so
+we can base on that to get a ConfigOpts instance (CONF object) with full list
+of options from not only main project but also other projects which are listed
+in namespace file. At this time, we can parsing old config file with our CONF
+object that we just archived which mean we can read all of values in config
+file with right format.
 
-1. ConfigOpts instance
+One more important thing that we should have a way to understand all of values
+in dynamic section[1]. This can be solved by defination plugin for each project
+that are using dynamic section.
 
+Problem 2: How to map/convert old values into new configuration file?
 
+- Did all configuration changes been described in codebase?
+- How many ways did developers use for configuration changes? Does `oslo.config`
+support for all of changes that mean we can define all of them in codebase?
 
-2. Mapping-file
-We need a file to declare deprecated options and new options. Currently in source-code, there are two options
-to do this such as 
+And the answers: not all configuration option changes are defined in codebase
+or even showed up in release notes. Moreover, `oslo.config` does not support
+us to define some configuration changes in somecase following:
+- Mapping multi config values into one new values
+- The value of an option should be change as a compatible with new source code
 
+Example: #TODO
 
-Solution 2: Adding new information for new options in source-code
------------------------------------------------------------------
+All of them will be solved by an config mapping file which is automatically
+generated from `oslo.config` during filter all of changes indications that are
+defined for each option in each project.
 
+To do this, we need to implement three more attributes for each option:
+- values: list of values will be put to templates
+- templates: an simple template format to defined new value from a list of
+old value
+- mapping: in case of the value of an option should be change as a compatible
+with new source code, we need to convert old value to new value one by one.
 
+With three new things, all of projects can define almost of change cases of
+config options and operators will generate mapping file by `oslo.config`.
 
 
 Implementation
@@ -77,3 +102,5 @@ Primary assignee:
 Work Items
 ==========
 None.
+
+[1] What is dynamic section?
