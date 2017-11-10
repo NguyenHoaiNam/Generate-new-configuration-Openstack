@@ -34,6 +34,7 @@ Assignee(s)
 
 Primary assignee:
   Dai Dang Van <daidv@vn.fujitsu.com>
+ 
   Nam Nguyen Hoai <namnh@vn.fujitsu.com>
 
 Work Items
