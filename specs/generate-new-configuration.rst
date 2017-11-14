@@ -25,27 +25,27 @@ Imagine, this feature is implemented to `oslo.config`. Users can run this
 feature on old release to generate new configuration for new release and the
 configuration will be able to use for new enviroment.
 
-                               namespace file
-                                     +
-                                     |
-                                     |
-                               +-----v--------+
-    Old configuration +-------->              |
-                               |  Gen config  |
-                               |              +-------> New configuration
-         Mapping-file +-------->              |
-                               +--------------+
+                           namespace file
+                                  +
+                                  |
+                                  |
+                            +-----v--------+
+Old configuration  +-------->              |
+                            |  Gen config  |
+                            |              +-------> New configuration
+      Mapping-file +-------->              |
+                            +--------------+
 
-                          Running on old environment
+                       Running on old environment
 
 
 
 Proposed change:
 ================
-Currently, there are some problems which need to be archived for this feature.
+There are some problems which need to be archived for this feature.
 
 Problem 1: How to get old values from old config file via `oslo.config`?
----------------------------
+------------------------------------------------------------------------
 
 Now, we have a way to generate an sample configuration file for any project, so
 we can base on that to get a ConfigOpts instance (CONF object) with full list
@@ -54,33 +54,89 @@ in namespace file. At this time, we can parsing old config file with our CONF
 object that we just archived which mean we can read all of values in config
 file with right format.
 
-One more important thing that we should have a way to understand all of values
-in dynamic section[1]. This can be solved by defination plugin for each project
-that are using dynamic section.
+One more important thing that there is a dynamic section. For example, Cinder
+has a dynamic section named `enabled_backends` [1], if this option is declared
+like  `enabled_backends = lvmdriver-1`, then there will be a section declared
+in cinder.conf like below:
+
+```
+[lvmdriver-1]
+image_volume_cache_enabled = True
+volume_clear = zero
+lvm_type = default
+iscsi_helper = tgtadm
+volume_group = stack-volumes-lvmdriver-1
+volume_driver = cinder.volume.drivers.lvm.LVMVolumeDriver
+volume_backend_name = lvmdriver-1
+```
+
+So how we can understand all values in dynamic section, this problem is solved
+by defination plugin for each project that are using dynamic section like this [2].
 
 Problem 2: How to map/convert old values into new configuration file?
+---------------------------------------------------------------------
 
-- Did all configuration changes been described in codebase?
-- How many ways did developers use for configuration changes? Does `oslo.config`
-support for all of changes that mean we can define all of them in codebase?
+Question 1: Were all configuration changes described in codebase?
+Question 2: How many ways did developers use for configuration changes? Does
+`oslo.config` support for all of changes that mean we can define all of them
+in codebase?
 
-And the answers: not all configuration option changes are defined in codebase
-or even showed up in release notes. Moreover, `oslo.config` does not support
-us to define some configuration changes in somecase following:
+Here is answers:
+1. Not all configuration option changes were defined in codebase
+or even showed up in release notes.
+
+2. `oslo.config` does not support us to define some configuration changes in
+somecase following:
 - Mapping multi config values into one new values
 - The value of an option should be change as a compatible with new source code
 
-Example: #TODO
+Example:
 
-All of them will be solved by an config mapping file which is automatically
-generated from `oslo.config` during filter all of changes indications that are
-defined for each option in each project.
+For now, when a option is changed in new release there it will be declared
+as following:
 
-To do this, we need to implement three more attributes for each option:
-- values: list of values will be put to templates
-- templates: an simple template format to defined new value from a list of
-old value
-- mapping: in case of the value of an option should be change as a compatible
+```
+cfg.StrOpt('new_option',
+           help='This is a new option which is to replace with old_option',
+           deprecated_name='old_option',
+           deprecated_group='section')
+```
+In case we want to convert this new option in configuration file from
+old config (eg: 'old_config = abc' --> 'new_config = def')  then the above
+line of code are not enough for us to do this.
+
+
+This can be solved by an config mapping file to explain all necessary
+information as this demo file [3].
+
+Example: Template config-mapping file of oslo.messaging
+
+```
+deprecated_options:
+  oslo_messaging_rabbit:             <Old section in Old config file>
+  - name: rabbit_host                <Old key name in Old config file>
+    replacement_group: DEFAULT       <New section>
+    replacement_name: transport_url  <New key name>
+
+new_options:
+  DEFAULT:                           <New section in New config file>
+  - name: transport_url              <New key name in NEW config file>
+    value: rabbit_userid, rabbit_password, rabbit_host, rabbit_port
+                        List of all keys whose values will be added to template>
+    template: rabbit://{}:{}@{}:{}   <A template of the values in new config options>
+    mapping: None                    <Old value maps to new value>
+```
+
+But we can not mantain the files manually, there must be a method to generate
+the files automatically. So in order to do this we need to implement three
+more attributes for each option:
+
+  - values: list of values will be put to templates.
+
+  - templates: an simple template format to defined new value from a list of
+old value.
+
+  - mapping: in case of the value of an option should be change as a compatible
 with new source code, we need to convert old value to new value one by one.
 
 With three new things, all of projects can define almost of change cases of
@@ -103,4 +159,9 @@ Work Items
 ==========
 None.
 
-[1] What is dynamic section?
+[1] https://github.com/openstack/cinder/blob/66b3a52794f9c2aa6652b28c0a8e67792e2f993b/cinder/common/config.py#L160
+
+[2] https://github.com/NguyenHoaiNam/Jump-Over-Release/blob/spec/jor/getconf/dynamic_section/cinder.py
+
+[3] https://github.com/NguyenHoaiNam/Jump-Over-Release/blob/spec/jor/templates/ocata/oslo_messaging.yaml or
+https://github.com/NguyenHoaiNam/Jump-Over-Release/blob/spec/jor/templates/ocata/cinder.yaml 
