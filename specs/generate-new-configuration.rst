@@ -4,28 +4,27 @@
 
  http://creativecommons.org/licenses/by/3.0/legalcode
 
-==========================
-Generate new configuration
-==========================
+===========================================
+Configuration change handling over releases
+===========================================
 
-OpenStack users would like to have a method to generate new configuration
-for new release from old configuration. This spec outlines this method.
+OpenStack users would like to have a mechanism to handle configuration changes
+over release cycles (deprecation, removed..). This spec outlines this mechanism.
 
 Problem description:
 ====================
 
-When users upgrade their OpenStack system to new release. Users have to update
-new configuration for new release. At that time, users have to read release
-notes for doing this. But unfortunately, there are some options are not
-declared in release notes sometime. It will make users difficult and take
-a lot of time to update configuration files.
+When users perform upgrade their OpenStack system to new release, normally they are required to update
+configuration files for adapting changes from old release to new releases. Basically, at that time they must read release
+notes or change logs for doing this. But unfortunately, there could be some misunderstanding, lack of information in release
+notes that cause users confuse. There should be some helper in oslo.config for automatically adopt new changes and help users 
+manage their configuration files easily.
 
 Scenario:
 =========
 
-Imagine, this feature is implemented to **oslo.config**. Users can run this
-feature on old release to generate new configuration for new release and the
-configuration will be able to use for new enviroment::
+Below is the proposed workflow that users can perform on old system to generate new configuration for preparing upgrading to new
+release::
 
                                 namespace file
                                        +
@@ -43,15 +42,15 @@ configuration will be able to use for new enviroment::
 
 Proposed change:
 ================
-There are some problems which need to be archived for this feature.
+There are some problems that need to be achieved for this feature.
 
 Problem 1: How to get old values from old config file via `oslo.config`?
 ------------------------------------------------------------------------
 
-Now, we have a way to generate an sample configuration file for any project, so
-we can base on that to get a ConfigOpts instance (CONF object) with full list
+We had a method to generate sample configuration file for any projects, so
+we could base on that method to get a ConfigOpts instance (CONF object) with full list
 of options from not only main project but also other projects which are listed
-in namespace file. At this time, we can parsing old config file with our CONF
+in namespace file. At this time, we can parse old config files along with our CONF
 object that we just archived which mean we can read all of values in config
 file with right format.
 
