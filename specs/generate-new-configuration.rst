@@ -16,11 +16,12 @@ Problem description:
 
 When users perform upgrade their OpenStack system to new release, normally
 they are required to update configuration files for adapting changes from
-old release to new releases. Basically, at that time they must read release
-notes or change logs for doing this. But unfortunately, there could be some
-misunderstanding, lack of information in release notes that cause users
-confuse. There should be some helper in oslo.config for automatically adopt
-new changes and help users manage their configuration files easily.
+old release to new release. Basically, at that time they must read release
+notes or change logs or even track source code changes for doing this.
+But unfortunately, there could be some misunderstanding, lack of information
+in release notes that cause users confuse. There should be some helper in
+oslo.config for automatically adopt new changes and help users manage their
+configuration files easily.
 
 Scenario:
 =========
@@ -85,16 +86,16 @@ Problem 2: How to map/convert old values into new configuration file?
 Here is answers:
 
 * *Answer 1*: Not all configuration option changes were defined in codebase
-  or even showed up in release notes.
+  or even never showed up in release notes.
 
 * *Answer 2*: ``oslo.config`` does not support us to define some configuration 
   changes in somecase following:
 
   - Mapping multi config values into one new values.
-  - The value of an option should be change as a compatible with new source
+  - The value of an option should be changed as a compatible with new source
     code.
 
-So that we solve this problem then there must be config-mapping files for
+So that we solve this problem then there must be config-mapping file for
 each projects to explain all necessary information as this demo file [3]_.
 
 When an option is changed in new release there it will be declared
@@ -109,7 +110,7 @@ as following:
 
 In case we want to convert this new option in configuration file from
 old config (eg: 'old_config = abc' --> 'new_config = def') then the above
-line of code are not enough for us to do this. As mention, we need to have
+lines of code are not enough for us to do this. As mention, we need to have
 config-mapping file to explain more detail about this.
 
 For example:
@@ -134,16 +135,21 @@ This config-mapping file is to declare ``transport_url``:
 
 
 But it is not suitable to mantain the files manually, there must be a mechanism
-to do the files automatically. So in order to do this we need to implement 
+to do the files automatically, so in order to do this we need to implement 
 three more attributes for each option:
 
 - values: list of values will be put to templates.
 
-- template: an simple template format to render new value from a list of
+- template: using an simple template format to render new value from a list of
   old value.
 
-- mapping: in case of the value of an option should be change as a compatible
-  with new source code, we need to convert old value to new value one by one.
+- mapping: in case of the value of an option is changed, we need to convert old
+  value to new value.
+  
+  For example: At newton release, we need to declare like this in neutron.conf:
+
+  ``core_plugin = neutron.plugins.ml2.plugin.Ml2Plugin``
+  **BUT** it was changed at Pike: ``core_plugin = ml2``
 
 With three new things, all of projects can define almost of change cases of
 config options and operators will generate mapping file by **oslo.config**.
