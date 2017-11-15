@@ -48,9 +48,8 @@ Problem 1: How to get old values from old config file via ``oslo.config``?
 We had a method to generate sample configuration file for any projects, so
 we could base on that method to get a ConfigOpts instance (CONF object) with
 full list of options from not only main project but also other projects which
-are listed in namespace file. At this time, we can parse old config files along
-with our CONF object that we just archived which mean we can read all of values
-in config file with right format.
+are listed in namespace file. Then with that CONF object, we can get old config
+values with right format in config file.
 
 One more important thing that there is a dynamic section. For example, Cinder
 has a dynamic section named ``enabled_backends`` [1]_, if this option is
@@ -69,9 +68,10 @@ declared in cinder.conf like below.
   volume_backend_name = lvmdriver-1
 
 
-So how we can understand all values in dynamic section, this problem is solved
-by definning plugin for each project that are using dynamic section like
-this [2]_.
+So how can we understand all values in dynamic section? A new feature in
+oslo.config should be developed that support each project define dynamic
+sections in the same way. After that, we can read values of dymanic sections
+like the way that we are trying to do with Cinder dymanic section[2]_.
 
 Problem 2: How to map/convert old values into new configuration file?
 ---------------------------------------------------------------------
@@ -108,7 +108,7 @@ as following:
             deprecated_group='section')
 
 In case we want to convert this new option in configuration file from
-old config (eg: 'old_config = abc' --> 'new_config = def')  then the above
+old config (eg: 'old_config = abc' --> 'new_config = def') then the above
 line of code are not enough for us to do this. As mention, we need to have
 config-mapping file to explain more detail about this.
 
@@ -139,7 +139,7 @@ three more attributes for each option:
 
 - values: list of values will be put to templates.
 
-- templates: an simple template format to defined new value from a list of
+- templates: an simple template format to render new value from a list of
   old value.
 
 - mapping: in case of the value of an option should be change as a compatible
