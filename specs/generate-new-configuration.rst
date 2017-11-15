@@ -8,20 +8,21 @@
 Generate new configuration
 ==========================
 
-OpenStack users would like to have a method to generate a new configuration
+OpenStack users would like to have a method to generate new configuration
 for new release from old configuration. This spec outlines this method.
 
 Problem description:
 ====================
 
-When users upgrade their OpenStack system to new release. Users have to update 
-a new configuration for new release, so it takes a lot of time and makes users
-difficult sometime.
+When users upgrade their OpenStack system to new release. Users have to update
+new configuration for new release. At that time, users have to read release
+notes to do this. But unfortunately, there are some options are not declared 
+in release notes. It will make users difficult and take a lot of time.
 
 Scenario:
 =========
 
-Imagine, this feature is implemented to `oslo.config`. Users can run this
+Imagine, this feature is implemented to **oslo.config**. Users can run this
 feature on old release to generate new configuration for new release and the
 configuration will be able to use for new enviroment::
 
@@ -31,8 +32,8 @@ configuration will be able to use for new enviroment::
                                        |
                                 +------v-------+
     Old configuration  +-------->              |
-                                |  Gen config  |
-                                |              +-------> New configuration
+                                |              |
+                                |  Gen config  +-------> New configuration
           Mapping-file +-------->              |
                                 |              |
                                 +--------------+
@@ -77,9 +78,9 @@ this [2]_.
 Problem 2: How to map/convert old values into new configuration file?
 ---------------------------------------------------------------------
 
-**Question 1**: Were all configuration changes described in codebase?
+*Question 1*: Were all configuration changes described in codebase?
 
-**Question 2**: How many ways did developers use for configuration changes? 
+*Question 2*: How many ways did developers use for configuration changes? 
 Does `oslo.config` support for all of changes that mean we can define all 
 of them in codebase?
 
