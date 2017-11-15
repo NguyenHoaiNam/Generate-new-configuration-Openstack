@@ -14,23 +14,21 @@ over release cycles (deprecation, removed..). This spec outlines this mechanism.
 Problem description:
 ====================
 
-When users perform upgrade their OpenStack system to new release, normally they are required to update
-configuration files for adapting changes from old release to new releases. Basically, at that time they must read release
-notes or change logs for doing this. But unfortunately, there could be some misunderstanding, lack of information in release
-notes that cause users confuse. There should be some helper in oslo.config for automatically adopt new changes and help users 
-manage their configuration files easily.
+When users perform upgrade their OpenStack system to new release, normally
+they are required to update configuration files for adapting changes from
+old release to new releases. Basically, at that time they must read release
+notes or change logs for doing this. But unfortunately, there could be some
+misunderstanding, lack of information in release notes that cause users
+confuse. There should be some helper in oslo.config for automatically adopt
+new changes and help users manage their configuration files easily.
 
 Scenario:
 =========
 
-Below is the proposed workflow that users can perform on old system to generate new configuration for preparing upgrading to new
-release::
+Below is the proposed workflow that users can perform on old system to generate
+new configuration for preparing upgrading to new release::
 
-                                namespace file
-                                       +
-                                       |
-                                       |
-                                +------v-------+
+                                +--------------+
     Old configuration  +-------->              |
                                 |              |
                                 |  Gen config  +-------> New configuration
@@ -44,20 +42,20 @@ Proposed change:
 ================
 There are some problems that need to be achieved for this feature.
 
-Problem 1: How to get old values from old config file via `oslo.config`?
-------------------------------------------------------------------------
+Problem 1: How to get old values from old config file via ``oslo.config``?
+--------------------------------------------------------------------------
 
 We had a method to generate sample configuration file for any projects, so
-we could base on that method to get a ConfigOpts instance (CONF object) with full list
-of options from not only main project but also other projects which are listed
-in namespace file. At this time, we can parse old config files along with our CONF
-object that we just archived which mean we can read all of values in config
-file with right format.
+we could base on that method to get a ConfigOpts instance (CONF object) with
+full list of options from not only main project but also other projects which
+are listed in namespace file. At this time, we can parse old config files along
+with our CONF object that we just archived which mean we can read all of values
+in config file with right format.
 
 One more important thing that there is a dynamic section. For example, Cinder
-has a dynamic section named ``enabled_backends`` [1]_, if this option is declared
-like  ``enabled_backends = lvmdriver-1``, then there will be a section declared
-in cinder.conf like below.
+has a dynamic section named ``enabled_backends`` [1]_, if this option is
+declared like  ``enabled_backends = lvmdriver-1``, then there will be a section
+declared in cinder.conf like below.
 
 .. code-block:: ini
 
@@ -72,7 +70,7 @@ in cinder.conf like below.
 
 
 So how we can understand all values in dynamic section, this problem is solved
-by defination plugin for each project that are using dynamic section like
+by definning plugin for each project that are using dynamic section like
 this [2]_.
 
 Problem 2: How to map/convert old values into new configuration file?
@@ -92,12 +90,14 @@ Here is answers:
 * *Answer 2*: ``oslo.config`` does not support us to define some configuration 
   changes in somecase following:
 
-  - Mapping multi config values into one new values
-  - The value of an option should be change as a compatible with new source code
+  - Mapping multi config values into one new values.
+  - The value of an option should be change as a compatible with new source
+    code.
 
-Example:
+So that we solve this problem then there must be config-mapping files for
+each projects to explain all necessary information as this demo file [3]_.
 
-For now, when an option is changed in new release there it will be declared
+When an option is changed in new release there it will be declared
 as following:
 
 .. code-block:: python
@@ -109,13 +109,12 @@ as following:
 
 In case we want to convert this new option in configuration file from
 old config (eg: 'old_config = abc' --> 'new_config = def')  then the above
-line of code are not enough for us to do this.
+line of code are not enough for us to do this. As mention, we need to have
+config-mapping file to explain more detail about this.
 
+For example:
 
-This can be solved by an config mapping file to explain all necessary
-information as this demo file [3]_.
-
-Example: Template config-mapping file of oslo.messaging
+This config-mapping file is to declare ``transport_url``:
 
 .. code-block:: yaml
 
@@ -147,15 +146,16 @@ Work Items:
 Documentation Impact:
 =====================
 
-We need to add a good documentation to explain config-mapping file and how to
+We need to add a documentation to explain config-mapping file and how to
 create this file.
 
 Tool Impact:
 ============
 
-It is necessary to have a tool to generate previous configuration changes to
-config-mapping file. After that deverlopers will maintain the files manually,
-whenever there is a configuration change then the files must be updated.
+It is necessary to have an utility to generate previous configuration changes
+to config-mapping file. After that developers will maintain the files
+manually, whenever there is a configuration change then the files must be
+updated.
 
 Implementation:
 ===============
@@ -168,6 +168,8 @@ Primary assignee:
   Dai Dang Van <daidv@vn.fujitsu.com>
 
   Nam Nguyen Hoai <namnh@vn.fujitsu.com>
+
+  Hieu Le <hieulq@vn.fujitsu.com>
 
 References:
 ===========
