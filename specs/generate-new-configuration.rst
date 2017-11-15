@@ -143,7 +143,7 @@ Work Items:
    file.
 
 3. Implement a mechanism to generate new configuration based on
-   config-mapping file and old configuration. Fox example [4]_
+   config-mapping file and old configuration. For example [4]_.
 
 Documentation Impact:
 =====================
