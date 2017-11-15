@@ -46,10 +46,10 @@ Problem 1: How to get old values from old config file via ``oslo.config``?
 --------------------------------------------------------------------------
 
 We had a method to generate sample configuration file for any projects, so
-we could base on that method to get a ConfigOpts instance (CONF object) with
+we could base on this method to get a ConfigOpts instance (CONF object) with
 full list of options from not only main project but also other projects which
-are listed in namespace file. Then with that CONF object, we can get old config
-values with right format in config file.
+are listed in namespace file. Then, we can get old config values in config file
+with right format via CONF object.
 
 One more important thing that there is a dynamic section. For example, Cinder
 has a dynamic section named ``enabled_backends`` [1]_, if this option is
@@ -69,7 +69,7 @@ declared in cinder.conf like below.
 
 
 So how can we understand all values in dynamic section? A new feature in
-oslo.config should be developed that support each project define dynamic
+oslo.config should be developed that support projects define dynamic
 sections in the same way. After that, we can read values of dymanic sections
 like the way that we are trying to do with Cinder dymanic section[2]_.
 
@@ -139,7 +139,7 @@ three more attributes for each option:
 
 - values: list of values will be put to templates.
 
-- templates: an simple template format to render new value from a list of
+- template: an simple template format to render new value from a list of
   old value.
 
 - mapping: in case of the value of an option should be change as a compatible
@@ -152,11 +152,15 @@ Work Items:
 ===========
 
 1. Implement a method to get values from configuration file.
+ 
+  - Support to register dynamic section with oslo.config
+  - Implement on each project to support oslo.config get dynamic section
 
-2. Declare yaml file for each project and convince projects to maintain yaml
-   file.
+2. Develop three new attributes: values, template and mapping.
 
-3. Implement a mechanism to generate new configuration based on
+3. Implement a new function to render config-mapping file from codebase.
+
+4. Implement a mechanism to generate new configuration based on
    config-mapping file and old configuration. For example [4]_.
 
 Documentation Impact:
@@ -172,6 +176,11 @@ It is necessary to have an utility to generate previous configuration changes
 to config-mapping file. After that developers will maintain the files
 manually, whenever there is a configuration change then the files must be
 updated.
+
+Test Impact:
+============
+
+There must be a method to validate the syntax of config-mapping file.
 
 Implementation:
 ===============
