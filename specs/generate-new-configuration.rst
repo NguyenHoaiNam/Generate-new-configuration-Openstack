@@ -78,22 +78,22 @@ this [2]_.
 Problem 2: How to map/convert old values into new configuration file?
 ---------------------------------------------------------------------
 
-*Question 1*: Were all configuration changes described in codebase?
+* *Question 1*: Were all configuration changes described in codebase?
 
-*Question 2*: How many ways did developers use for configuration changes? 
-Does `oslo.config` support for all of changes that mean we can define all 
-of them in codebase?
+* *Question 2*: How many ways did developers use for configuration changes? 
+  Does `oslo.config` support for all of changes that mean we can define all 
+  of them in codebase?
 
 Here is answers:
 
-1. Not all configuration option changes were defined in codebase
-or even showed up in release notes.
+* *Answer 1*: Not all configuration option changes were defined in codebase
+   or even showed up in release notes.
 
-2. ``oslo.config`` does not support us to define some configuration changes in
-somecase following:
+* *Answer 2*: ``oslo.config`` does not support us to define some configuration 
+  changes in somecase following:
 
-- Mapping multi config values into one new values
-- The value of an option should be change as a compatible with new source code
+  - Mapping multi config values into one new values
+  - The value of an option should be change as a compatible with new source code
 
 Example:
 
@@ -133,8 +133,8 @@ Example: Template config-mapping file of oslo.messaging
       template: rabbit://{}:{}@{}:{}   <A template of the values in new config options>
       mapping: None                    <Old value maps to new value>
 
-Work Items
-==========
+Work Items:
+===========
 
 1. Implement a method to get values from configuration file.
 
@@ -144,8 +144,21 @@ Work Items
 3. Implement a mechanism to generate new configuration based on
    config-mapping file and old configuration. Fox example [4]_
 
-Implementation
-==============
+Documentation Impact:
+=====================
+
+We need to add a good documentation to explain config-mapping file and how to
+create this file.
+
+Tool Impact:
+============
+
+It is necessary to have a tool to generate previous configuration changes to
+config-mapping file. After that deverlopers will main the files manually,
+whenever there is a configuration change then the files must be updated.
+
+Implementation:
+===============
 
 Assignee(s)
 -----------
@@ -157,8 +170,9 @@ Primary assignee:
   Nam Nguyen Hoai <namnh@vn.fujitsu.com>
 
 
-References
-==========
+
+References:
+===========
 
 .. [1] https://github.com/openstack/cinder/blob/66b3a52794f9c2aa6652b28c0a8e67792e2f993b/cinder/common/config.py#L160
 
