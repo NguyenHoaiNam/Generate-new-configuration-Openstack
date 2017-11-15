@@ -16,8 +16,9 @@ Problem description:
 
 When users upgrade their OpenStack system to new release. Users have to update
 new configuration for new release. At that time, users have to read release
-notes to do this. But unfortunately, there are some options are not declared 
-in release notes. It will make users difficult and take a lot of time.
+notes for doing this. But unfortunately, there are some options are not
+declared in release notes sometime. It will make users difficult and take
+a lot of time to update configuration files.
 
 Scenario:
 =========
@@ -87,7 +88,7 @@ Problem 2: How to map/convert old values into new configuration file?
 Here is answers:
 
 * *Answer 1*: Not all configuration option changes were defined in codebase
-   or even showed up in release notes.
+  or even showed up in release notes.
 
 * *Answer 2*: ``oslo.config`` does not support us to define some configuration 
   changes in somecase following:
@@ -97,7 +98,7 @@ Here is answers:
 
 Example:
 
-For now, when a option is changed in new release there it will be declared
+For now, when an option is changed in new release there it will be declared
 as following:
 
 .. code-block:: python
@@ -154,7 +155,7 @@ Tool Impact:
 ============
 
 It is necessary to have a tool to generate previous configuration changes to
-config-mapping file. After that deverlopers will main the files manually,
+config-mapping file. After that deverlopers will maintain the files manually,
 whenever there is a configuration change then the files must be updated.
 
 Implementation:
@@ -168,8 +169,6 @@ Primary assignee:
   Dai Dang Van <daidv@vn.fujitsu.com>
 
   Nam Nguyen Hoai <namnh@vn.fujitsu.com>
-
-
 
 References:
 ===========
