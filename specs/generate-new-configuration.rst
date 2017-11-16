@@ -132,6 +132,22 @@ This config-mapping file is to declare ``transport_url``:
       template: rabbit://{}:{}@{}:{}   <A template of the values in new config options>
       mapping: None                    <Old value maps to new value>
 
+
+But it is not suitable to mantain the files manually, there must be a mechanism
+to do the files automatically. So in order to do this we need to implement 
+three more attributes for each option:
+
+- values: list of values will be put to templates.
+
+- templates: an simple template format to defined new value from a list of
+  old value.
+
+- mapping: in case of the value of an option should be change as a compatible
+  with new source code, we need to convert old value to new value one by one.
+
+With three new things, all of projects can define almost of change cases of
+config options and operators will generate mapping file by **oslo.config**.
+
 Work Items:
 ===========
 
