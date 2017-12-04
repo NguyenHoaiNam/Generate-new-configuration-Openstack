@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/NguyenHoaiNam/Jump-Over-Release.svg?branch=master)](https://travis-ci.org/NguyenHoaiNam/Jump-Over-Release)
+[![Build Status](https://travis-ci.org/namptit307/Jump-Over-Release.svg?branch=master)](https://travis-ci.org/namptit307/Jump-Over-Release)
 # Generate-new-configuration-Openstack
 This project is to generate new configuration automatically for Openstack new release
 
